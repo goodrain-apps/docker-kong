@@ -64,12 +64,12 @@ if [[ ! -z "${POSTGRESQL_HOST}" ]]; then
         /tmp/init.sql
     sed -i -e "s|{POSTGRESQL_DB}|${POSTGRESQL_DB}|" /tmp/checkdb.sql
 
-    pcursor=$(psql -h ${POSTGRESQL_HOST} -U ${POSTGRESQL_USER} -f /tmp/checkdb.sql -Ax)
-    echo "psql -h ${POSTGRESQL_HOST} -U ${POSTGRESQL_USER} -f /tmp/checkdb.sql -Ax"
+    pcursor=$(psql -h ${POSTGRESQL_HOST} -U ${POSTGRESQL_USER} -p ${POSTGRESQL_PORT} -f /tmp/checkdb.sql -Ax)
+    echo "psql -h ${POSTGRESQL_HOST} -U ${POSTGRESQL_USER} -p ${POSTGRESQL_PORT} -f /tmp/checkdb.sql -Ax"
     db_num=$(echo $pcursor | awk -F '|' '{print $2}')
     if [[ ${db_num} -eq 0 ]]; then
-        psql -h ${POSTGRESQL_HOST} -U ${POSTGRESQL_USER} -f /tmp/init.sql
-        echo "psql -h ${POSTGRESQL_HOST} -U ${POSTGRESQL_USER} -f /tmp/init.sql"
+        psql -h ${POSTGRESQL_HOST} -U ${POSTGRESQL_USER} -p ${POSTGRESQL_PORT} -f /tmp/init.sql
+        echo "psql -h ${POSTGRESQL_HOST} -U ${POSTGRESQL_USER} -p ${POSTGRESQL_PORT} -f /tmp/init.sql"
     fi
 
 else
